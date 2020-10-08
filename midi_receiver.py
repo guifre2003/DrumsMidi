@@ -21,7 +21,8 @@ while timer < 250:
     # El while acabarà als 10 segons.
     for msg in input_port.iter_pending():
         end = time.time()
-        msg.time = int(((end - start) * 1000)
+        msg.time = ((end - start) * 1000)
+        
         if msg.time < 0.5:
             msg.time = int(msg.time - ((end - start) * 1000) % (milisecond_tempo / 8))
         else:
