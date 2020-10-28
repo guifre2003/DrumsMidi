@@ -27,7 +27,7 @@ while timer < 250:
             msg.time = int(msg.time - ((end - start) * 1000) % (milisecond_tempo / 8))
         else:
             msg.time = int(msg.time - ((end - start) * 1000) % (milisecond_tempo / 8)) + milisecond_tempo
-        # El mòdul serveix per quantitzar (ara esta a semicorxeres, una quarta part de negra).
+        # El mòdul serveix per quantitzar (ara esta a fusas, una quarta part de negra).
         file1.write(str(msg) + '\n')
         print(msg)
     time.sleep(0.02)
