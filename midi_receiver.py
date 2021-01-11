@@ -19,6 +19,7 @@ start = time.time()
 timer = 0
 while timer < 250:
     # El while acabarà als 10 segons.
+    if msg = True
     for msg in input_port.iter_pending():
         end = time.time()
         msg.time = ((end - start) * 1000)
@@ -27,7 +28,7 @@ while timer < 250:
             msg.time = int(msg.time - ((end - start) * 1000) % (milisecond_tempo / 8))
         else:
             msg.time = int(msg.time - ((end - start) * 1000) % (milisecond_tempo / 8)) + milisecond_tempo
-        # El mòdul serveix per quantitzar (ara esta a semicorxeres, una quarta part de negra).
+        # El mòdul serveix per quantitzar (ara esta a fusas, una quarta part de negra).
         file1.write(str(msg) + '\n')
         print(msg)
     time.sleep(0.02)
