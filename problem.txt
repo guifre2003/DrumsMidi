@@ -6,3 +6,11 @@ El problema es que la segunda parte del programa a partir de la linea 19, el mis
 coincidencias no me funciona ya que el 
 if notes:
 no se activa y por lo tanto no me imprime la palabra (sin espacios) en que coincide.
+
+El enfoque de como leer los datos del txt no estaba bien:
+  * hay que parsear las lineas que son strings de caracteres, y guardar los valores como key-value en un Dictionary por linea
+  * es conveniente convertir los valores a su tipo correcto (int o float)
+  * para parsear cada linea, no hace falta tirar de librerias extra: el propio string tiene métodos para eso
+  * no hace falta crear un Dictionary para guardar las lineas (en ese caso ya convertidos en Dictionary): eso se puede guardar en un List
+  
+Luego se puede procesar el contenido de los dictionaries como haga falta, accediendo a cada valor de esta manera: dictionary[key] p.e. dictionary['note'], lo cual te da el valor como int. En el ejemplo lo vuelvo a convertir a string para poder pasarlo al print(), pero eso no hará falta para interpretar el valor de la nota.
