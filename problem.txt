@@ -1,0 +1,8 @@
+Hola Jan
+El problema que tengo es en partitureMaker.py
+Hasta la linea 18 todo va bien, he descartado las note_of usando el buscador de coincidencias 
+(re.match) y he añadido las note_on a un diccionario enumerado.
+El problema es que la segunda parte del programa a partir de la linea 19, el mismo buscador de 
+coincidencias no me funciona ya que el 
+if notes:
+no se activa y por lo tanto no me imprime la palabra (sin espacios) en que coincide.
