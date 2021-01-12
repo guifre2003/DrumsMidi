@@ -19,6 +19,7 @@ start = time.time()
 timer = 0
 while timer < 250:
     # El while acabarà als 10 segons.
+    if msg = True
     for msg in input_port.iter_pending():
         end = time.time()
         msg.time = ((end - start) * 1000)
