@@ -1,6 +1,7 @@
 from io import open
 
-txt = open("c:/temp/inputs.txt", "r")
+#"c:/temp/inputs.txt"
+txt = open("inputs.txt", "r")
 dictionaries = []
 while True:
     # read line

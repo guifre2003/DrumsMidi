@@ -14,3 +14,9 @@ El enfoque de como leer los datos del txt no estaba bien:
   * no hace falta crear un Dictionary para guardar las lineas (en ese caso ya convertidos en Dictionary): eso se puede guardar en un List
   
 Luego se puede procesar el contenido de los dictionaries como haga falta, accediendo a cada valor de esta manera: dictionary[key] p.e. dictionary['note'], lo cual te da el valor como int. En el ejemplo lo vuelvo a convertir a string para poder pasarlo al print(), pero eso no hará falta para interpretar el valor de la nota.
+
+
+
+Preguntas sobre tu corrección por lineas:
+  * 21 Que significa "line[8:-1]"
+  * 27-35 Porqué los corchetes tienen diferentes numeros iniciales y despues de los dos puntos python entiende que es un 0, no?
