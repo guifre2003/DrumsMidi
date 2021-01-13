@@ -34,24 +34,19 @@ while True:
         elif linepart.startswith('velocity'):
             velocity = int(linepart[9:])
         elif linepart.startswith('time'):
-            time = float(linepart[5:])   
+            time = float(linepart[5:])  
+         
+    # create a dictionary for 'note_on'
+    dictionary = {}
+    dictionary['channel'] = channel
+    dictionary['note'] = note
+    dictionary['velocity'] = velocity
+    dictionary['time'] = time
+    dictionaries.append(dictionary) 
     
-    if on:
-        # create a dictionary for 'note_on'
-        dictionary = {}
-        dictionary['channel'] = channel;
-        dictionary['note'] = note;
-        dictionary['velocity'] = velocity;
-        dictionary['time'] = time;
-        dictionaries.append(dictionary) 
-    else:
-        # look for the corresponding dictionary for 'note_off' line and set its duration
-        for dictionary in reversed(dictionaries):
-            if dictionary['channel'] == channel and dictionary['note'] == note:
-                dictionary['duration'] = time-dictionary['time']
-                break
-
-        
+    for dictionary in dictionaries.reverse():
+        if dictionary['channel'] == channel and dictionary['note'] == note and dictionary['time'] != time:
+            dictionary['duration'] = time - dictionary[time]
 txt.close()
 
 for dictionary in dictionaries:
