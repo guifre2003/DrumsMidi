@@ -30,21 +30,22 @@ while True:
     
     # extract the values from line and add them to the dictionary (as int or float)
     for linepart in lineparts:
-        if line.startswith('note_on'):
+        if lineparts.index('note_on'):
+            switch = 'on'
             if linepart.startswith('channel'):
-                dictionary['channel'] = int(linepart[8:])
-            elif linepart.startswith('note'):
-                dictionary['note'] = int(linepart[5:])
+                channel = int(linepart[8:])
+            elif linepart.startswith('note='):
+                note = int(linepart[5:])
             elif linepart.startswith('velocity'):
-                dictionary['velocity'] = int(linepart[9:])
+                velocity = int(linepart[9:])
             elif linepart.startswith('time'):
-                dictionary['time'] = float(linepart[5:])
-        elif line.startswith('note_off'):
-            print(dictionaries.index)
+                time = float(linepart[5:])
+        elif lineparts.index('note_off') in lineparts and linepart.startswith('note='):
+            # thing_index = thing_list.index(elem) if elem in thing_list else -1
+            print('funciona!!!')
+    print(switch, channel, note, velocity, time)
 txt.close()
 
 for dictionary in dictionaries:
     # print the dictionary
     print(dictionary)
-    # print only the note
-    print('note -> '+str(dictionary['note']))
