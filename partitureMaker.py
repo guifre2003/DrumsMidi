@@ -1,8 +1,11 @@
 from io import open
 
-# instrument = input("Introdueix l'instrument ('bateria' o  'piano')")
-# "c:/temp/inputs.txt"
-txt = open("/home/guifre2003/Desktop/tr/virtualEnv/trLinux/inputs.txt", "r")
+# get the filePath
+filePath = input('FilePath: ')
+#filePath = 'c:/temp/inputs.txt';
+#filePath = '/home/guifre2003/Desktop/tr/virtualEnv/trLinux/inputs.txt';
+
+txt = open(filePath, "r")
 dictionaries = []
 while True:
     # read line
@@ -10,38 +13,45 @@ while True:
     if not line:
         break
     
-    # discard lines with 'note_off'
-    # if line.startswith('note_off'):
-    #     continue
-
-    # discard lines with no information
-    if len(line) < 49:
+    # discard lines without 'note_'
+    if line.startswith('note_') == False:
         continue
-    
-    # create a dictionary for each line
-    dictionary = {}
-    dictionaries.append(dictionary) 
 
     # trim 'note_on' and the trailing EOL from the line 
-    values_line = line[8:-1]
     line = line[:-1]
     
     # split into substrings by key-value
     lineparts = line.split(' ')
-    values_linepart = values_line.split(' ')
-
-    # extract the values from line and add them to the dictionary (as int or float)
+    
+    # extract the values from line (as boolean, int or float)
     for linepart in lineparts:
-        if linepart.startswith('note_on'):
-            for values_linepart in values_line:
-                if values_linepart.startswith('channel'):
-                    dictionary['channel'] = int(values_linepart[8:])
-                elif values_linepart.startswith('note='):
-                    dictionary['note'] = int(values_linepart[5:])
-                elif values_linepart.startswith('velocity'):
-                    dictionary['velocity'] = int(values_linepart[9:])
-                elif values_linepart.startswith('time'):
-                    dictionary['time'] = float(values_linepart[5:])   
+        if linepart.startswith('note_'):
+            on = linepart[5:] == 'on'
+        elif linepart.startswith('channel'):
+            channel = int(linepart[8:])
+        elif linepart.startswith('note'):
+            note = int(linepart[5:])
+        elif linepart.startswith('velocity'):
+            velocity = int(linepart[9:])
+        elif linepart.startswith('time'):
+            time = float(linepart[5:])   
+    
+    if on:
+        # create a dictionary for 'note_on'
+        dictionary = {}
+        dictionary['channel'] = channel;
+        dictionary['note'] = note;
+        dictionary['velocity'] = velocity;
+        dictionary['time'] = time;
+        dictionaries.append(dictionary) 
+    else:
+        # look for the corresponding dictionary for 'note_off' line and set its duration
+        for dictionary in reversed(dictionaries):
+            if dictionary['channel'] == channel and dictionary['note'] == note:
+                dictionary['duration'] = time-dictionary['time']
+                break
+
+        
 txt.close()
 
 for dictionary in dictionaries:
