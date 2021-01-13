@@ -2,7 +2,7 @@ from io import open
 
 # instrument = input("Introdueix l'instrument ('bateria' o  'piano')")
 # "c:/temp/inputs.txt"
-txt = open("inputs.txt", "r")
+txt = open("/home/guifre2003/Desktop/tr/virtualEnv/trLinux/inputs.txt", "r")
 dictionaries = []
 while True:
     # read line
@@ -23,27 +23,25 @@ while True:
     dictionaries.append(dictionary) 
 
     # trim 'note_on' and the trailing EOL from the line 
+    values_line = line[8:-1]
     line = line[:-1]
     
     # split into substrings by key-value
     lineparts = line.split(' ')
-    
+    values_linepart = values_line.split(' ')
+
     # extract the values from line and add them to the dictionary (as int or float)
     for linepart in lineparts:
-        if lineparts.index('note_on'):
-            switch = 'on'
-            if linepart.startswith('channel'):
-                channel = int(linepart[8:])
-            elif linepart.startswith('note='):
-                note = int(linepart[5:])
-            elif linepart.startswith('velocity'):
-                velocity = int(linepart[9:])
-            elif linepart.startswith('time'):
-                time = float(linepart[5:])
-        elif lineparts.index('note_off') in lineparts and linepart.startswith('note='):
-            # thing_index = thing_list.index(elem) if elem in thing_list else -1
-            print('funciona!!!')
-    print(switch, channel, note, velocity, time)
+        if linepart.startswith('note_on'):
+            for values_linepart in values_line:
+                if values_linepart.startswith('channel'):
+                    dictionary['channel'] = int(values_linepart[8:])
+                elif values_linepart.startswith('note='):
+                    dictionary['note'] = int(values_linepart[5:])
+                elif values_linepart.startswith('velocity'):
+                    dictionary['velocity'] = int(values_linepart[9:])
+                elif values_linepart.startswith('time'):
+                    dictionary['time'] = float(values_linepart[5:])   
 txt.close()
 
 for dictionary in dictionaries:
