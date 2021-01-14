@@ -44,9 +44,13 @@ while True:
     dictionary['time'] = time
     dictionaries.append(dictionary) 
     
-    for dictionary in dictionaries.reverse():
+    for dictionary in reversed(dictionaries):
         if dictionary['channel'] == channel and dictionary['note'] == note and dictionary['time'] != time:
-            dictionary['duration'] = time - dictionary[time]
+            for linepart in dictionary:
+                if linepart.startswith('time') and linepart[5:] == time:
+                        dictionary['duration'] = int(dictionary[time]) - int(time)
+                else:
+                    break
 txt.close()
 
 for dictionary in dictionaries:
