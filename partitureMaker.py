@@ -3,84 +3,92 @@ import ly
 
 # get the filePath
 filePath = input('FilePath: ')
-#filePath = 'c:/temp/inputs.txt';
-#filePath = '/home/guifre2003/Desktop/tr/virtualEnv/trLinux/inputs.txt';
+# filePath = 'c:/temp/inputs.txt';
+# filePath = '/home/guifre2003/Desktop/tr/virtualEnv/trLinux/inputs.txt';
+
+NOTES_TABLE = {
+    "38": "b'",
+    "40": "b'",
+    "36": "d'",
+    "48": "e''",
+    "45": "d'",
+    "43": "f'",
+    "51": "a''",
+    "42": "g''",
+    "55": "f''",
+}
 
 txt = open(filePath, "r")
-dictionaries = []
+midi_events = []
 while True:
     # read line
     line = txt.readline()
     if not line:
         break
-    
+
     # discard lines without 'note_'
     if line.startswith('note_') == False:
         continue
 
     # trim 'note_on' and the trailing EOL from the line 
     line = line[:-1]
-    
+
     # split into substrings by key-value
     lineparts = line.split(' ')
-    
-    # extract the values from line (as boolean, int or float)
-    for linepart in lineparts:
-        if linepart.startswith('note_'):
-            on = linepart[5:] == 'on'
-        elif linepart.startswith('channel'):
-            channel = int(linepart[8:])
-        elif linepart.startswith('note'):
-            if int(linepart[5:]) == 38:
-                note = "b'"
-            if int(linepart[5:]) == 40:
-                note = "b'"
-            if int(linepart[5:]) == 36:
-                note = "d'"
-            if int(linepart[5:]) == 48:
-                note = "e''"
-            if int(linepart[5:]) == 45:
-                note = "d''"
-            if int(linepart[5:]) == 43:
-                note = "f'"
-            if int(linepart[5:]) == 51:
-                note = "a''"
-            if int(linepart[5:]) == 42:
-                note = "g''"
-            if int(linepart[5:]) == 55:
-                note = "f''"
-        elif linepart.startswith('velocity'):
-            velocity = int(linepart[9:])
-        elif linepart.startswith('time'):
-            time = float(linepart[5:])   
 
-    if on:
+    # extract the values from line (as boolean, int or float)
+    is_note_on = False
+
+    for linepart in lineparts:
+        splitted_linepart = linepart.split('=')
+        left = splitted_linepart[0]
+        if len(splitted_linepart) > 1:
+            right = splitted_linepart[1]
+        else:
+            right = None
+
+        if linepart == 'note_on':
+            is_note_on = True
+
+        elif left == 'channel':
+            channel = int(right)
+
+        elif left == 'note':
+            note = NOTES_TABLE[right]
+
+        elif left == 'velocity':
+            velocity = int(right)
+
+        elif left == 'time':
+            time = float(right)
+
+    if is_note_on:
         # create a dictionary for 'note_on'
-        dictionary = {}
-        dictionary['channel'] = channel
-        dictionary['note'] = note
-        dictionary['velocity'] = velocity
-        dictionary['time'] = time
-        dictionaries.append(dictionary) 
+        midi_event = {
+            'channel': channel,
+            'note': note,
+            'velocity': velocity,
+            'time': time,
+        }
+        midi_events.append(midi_event)
     else:
         # look for the corresponding dictionary for 'note_off' line and set its duration
-        for dictionary in reversed(dictionaries):
-            if dictionary['channel'] == channel and dictionary['note'] == note:
-                dictionary['duration'] = time-dictionary['time']
+        for midi_event in reversed(midi_events):
+            if midi_event['channel'] == channel and midi_event['note'] == note:
+                midi_event['duration'] = time - midi_event['time']
                 break
 
-        
 txt.close()
+
 
 def template(pitch, duration):
     pdf.write()
-for dictionary in dictionaries:
-    # print the dictionary
-    print(dictionary)
 
-pdf = open('notes.ly', 'w')
-pdf.write('')
-pdf.close
+
+for midi_event in midi_events:
+    # print the dictionary
+    print(midi_event)
 
 pdf = open('notes.ly', 'a')
 pdf.write("\\relative {\n" + "  \\time 4/4\n")
+pdf.close()
