@@ -1,4 +1,5 @@
 from io import open
+import ly
 
 # get the filePath
 filePath = input('FilePath: ')
@@ -34,23 +35,24 @@ while True:
         elif linepart.startswith('velocity'):
             velocity = int(linepart[9:])
         elif linepart.startswith('time'):
-            time = float(linepart[5:])  
-         
-    # create a dictionary for 'note_on'
-    dictionary = {}
-    dictionary['channel'] = channel
-    dictionary['note'] = note
-    dictionary['velocity'] = velocity
-    dictionary['time'] = time
-    dictionaries.append(dictionary) 
+            time = float(linepart[5:])   
     
-    for dictionary in reversed(dictionaries):
-        if dictionary['channel'] == channel and dictionary['note'] == note and dictionary['time'] != time:
-            for linepart in dictionary:
-                if linepart.startswith('time') and linepart[5:] == time:
-                        dictionary['duration'] = int(dictionary[time]) - int(time)
-                else:
-                    break
+    if on:
+        # create a dictionary for 'note_on'
+        dictionary = {}
+        dictionary['channel'] = channel;
+        dictionary['note'] = note;
+        dictionary['velocity'] = velocity;
+        dictionary['time'] = time;
+        dictionaries.append(dictionary) 
+    else:
+        # look for the corresponding dictionary for 'note_off' line and set its duration
+        for dictionary in reversed(dictionaries):
+            if dictionary['channel'] == channel and dictionary['note'] == note:
+                dictionary['duration'] = time-dictionary['time']
+                break
+
+        
 txt.close()
 
 for dictionary in dictionaries:
