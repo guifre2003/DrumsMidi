@@ -80,15 +80,17 @@ while True:
 
 txt.close()
 
+pdf = open('notes.ly', 'w')
+pdf.write("\\relative {\n" + "  \\time 4/4\n    ")
 
-def template(pitch, duration):
-    pdf.write()
+def template(pitch):
+    pdf.write("{" + pitch + "4}")
 
 
 for midi_event in midi_events:
     # print the dictionary
     print(midi_event)
+    template(midi_event['note'])
 
-pdf = open('notes.ly', 'a')
-pdf.write("\\relative {\n" + "  \\time 4/4\n")
 pdf.close()
+
