@@ -31,19 +31,36 @@ while True:
         elif linepart.startswith('channel'):
             channel = int(linepart[8:])
         elif linepart.startswith('note'):
-            note = int(linepart[5:])
+            if int(linepart[5:]) == 38:
+                note = "b'"
+            if int(linepart[5:]) == 40:
+                note = "b'"
+            if int(linepart[5:]) == 36:
+                note = "d'"
+            if int(linepart[5:]) == 48:
+                note = "e''"
+            if int(linepart[5:]) == 45:
+                note = "d''"
+            if int(linepart[5:]) == 43:
+                note = "f'"
+            if int(linepart[5:]) == 51:
+                note = "a''"
+            if int(linepart[5:]) == 42:
+                note = "g''"
+            if int(linepart[5:]) == 55:
+                note = "f''"
         elif linepart.startswith('velocity'):
             velocity = int(linepart[9:])
         elif linepart.startswith('time'):
             time = float(linepart[5:])   
-    
+
     if on:
         # create a dictionary for 'note_on'
         dictionary = {}
-        dictionary['channel'] = channel;
-        dictionary['note'] = note;
-        dictionary['velocity'] = velocity;
-        dictionary['time'] = time;
+        dictionary['channel'] = channel
+        dictionary['note'] = note
+        dictionary['velocity'] = velocity
+        dictionary['time'] = time
         dictionaries.append(dictionary) 
     else:
         # look for the corresponding dictionary for 'note_off' line and set its duration
@@ -55,6 +72,15 @@ while True:
         
 txt.close()
 
+def template(pitch, duration):
+    pdf.write()
 for dictionary in dictionaries:
     # print the dictionary
     print(dictionary)
+
+pdf = open('notes.ly', 'w')
+pdf.write('')
+pdf.close
+
+pdf = open('notes.ly', 'a')
+pdf.write("\\relative {\n" + "  \\time 4/4\n")
